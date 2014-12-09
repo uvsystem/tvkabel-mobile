@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+		<link rel="stylesheet" href="css/uv-mobile.min.css" />
+		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
+		
+		<!-- UnitedVision's JS -->
+		<script src="http://www.uvision.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+
+		<!-- jQuery Library -->
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+        <title>United Vision</title>
+    </head>
+    <body>
+		<div data-role="page" data-theme="a">
+			<div data-role="header" data-position="fixed">
+				<input id="cari-detail-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" />
+			</div><!-- header -->
+			<div data-role="content" data-theme="a">
+				<table>
+					<tr>
+						<td>Nama Pelanggan</td>
+						<td colspan="2"><input type="text" id="nama-pelanggan" readonly /></td>
+					</tr>
+					<tr>
+						<td>Profesi Pelanggan</td>
+						<td colspan="2"><input type="text" id="profesi-pelanggan" readonly /></td>
+					</tr>
+					<tr>
+						<td>Tagihan</td>
+						<td><input type="text" id="bulan" readonly /></td>
+						<td><input type="text" id="tahun" readonly /></td>
+					</tr>
+					<tr>
+						<td>Jumlah Pembayaran</td>
+						<td colspan="2"><input type="text" id="jumlah-pembayaran" /></td>
+					</tr>
+				</table>
+				<div class="ui-grid-a">
+					<div class="ui-block-a"><button id="btn-simpan">Simpan</button></div>
+					<div class="ui-block-b"><button id="btn-reset">Reset</button></div>
+				</div><!-- control -->
+			</div><!-- content -->
+			<div data-role="footer" data-position="fixed" style="height: 80px;">
+				<h1>Pembayaran</h1>
+				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 60px; width: 60px;">Home</a>
+				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 60px; width: 60px;">Menu</a>
+			</div><!-- footer -->
+			<div data-role="panel" id="navigation-panel" data-position="right" data-display="push" data-theme="b">
+				<button onclick="location.href='customer.html'" class="ui-btn" width="100">Pelanggan</button>
+				<button onclick="location.href='payment.html'" class="ui-btn" width="100">Pembayaran</button>
+				<button onclick="location.href='map.html'" class="ui-btn" width="100">Peta</button>
+				<button onclick="location.href='gps.html'" class="ui-btn" width="100">Lokasi</button>
+				<button onclick="location.href='barcode.html'" class="ui-btn" width="100">Scan Barcode</button>
+			</div><!-- navigation-panel -->
+		</div><!-- page -->
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#cari-detail-pelanggan').change(function(){
+					alert('Cari Pelanggan');
+				});
+				
+				$('#btn-simpan').click(function(){
+					alert('Simpan Pembayaran');
+				});
+				
+				$('#btn-reset').click(function(){
+					alert('Reset Form');
+				});
+			});
+		</script>
+    </body>
+</html>
