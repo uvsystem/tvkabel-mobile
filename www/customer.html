@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
 		<link rel="stylesheet" href="css/uv-mobile.min.css" />
 		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
@@ -21,6 +21,8 @@
 		-->
 		<!-- UnitedVision's JS test -->
 		<script src="https://uvision-test.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+		<!-- UnitedVision-mobile's JS -->
+		<script src="js/unitedvision-mobile.js"></script>
 
         <title>United Vision</title>
     </head>
@@ -50,15 +52,36 @@
 				<button onclick="location.href='map.html'" class="ui-btn" width="100">Peta</button>
 				<button onclick="location.href='gps.html'" class="ui-btn" width="100">Lokasi</button>
 				<button onclick="location.href='barcode.html'" class="ui-btn" width="100">Scan Barcode</button>
+				<button id="btn-logout" class="ui-btn" width="100">Logout</button>
 			</div><!-- navigation-panel -->
 		</div><!-- page -->
 
 		<script type="text/javascript">
-			$(document).ready(function(){
-				$('#cari-data-pelanggan').change(function(){
-					alert('Cari Pelanggan');
-				});
-			});
+      $(document).ready(function () {
+          $('#cari-data-pelanggan').change(function () {
+              var kode = $('#cari-data-pelanggan').val();
+
+              if (kode !== '' || kode !== undefined) {
+                  var onSuccess = function (result) {
+                      var pelanggan = result.model;
+                      var alamat = pelanggan.namaKelurahan + ', Lingk. ' + pelanggan.lingkungan;
+                      var kontak = pelanggan.telepon + ', ' + pelanggan.hp + ', ' + pelanggan.email;
+
+                      $('#nama-pelanggan').val(pelanggan.nama);
+                      $('#profesi-pelanggan').val(pelanggan.profesi);
+                      $('#alamat-pelanggan').val(alamat);
+                      $('#kontak-pelanggan').val(kontak);
+                      $('#iuran-pelanggan').val(pelanggan.iuran);
+                      $('#tunggakan-pelanggan').val(pelanggan.tunggakan);
+                  }
+
+                  loadPelangganByKode(kode, onSuccess, errorMessage);
+              }
+          });
+          $('#btn-logout').click(function () {
+              logout();
+          });
+      });
 		</script>
     </body>
 </html>

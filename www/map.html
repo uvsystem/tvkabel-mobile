@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
 		<link rel="stylesheet" href="css/uv-mobile.min.css" />
 		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
@@ -21,13 +21,33 @@
 		-->
 		<!-- UnitedVision's JS test -->
 		<script src="https://uvision-test.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+		<!-- UnitedVision-mobile's JS -->
+		<script src="js/unitedvision-mobile.js"></script>
 
+	    <style type="text/css">
+		    #map-canvas { height: 700px; margin: 0; padding: 0; border: 0;}
+	    </style>
+
+	    <!-- Google Map's API -->
+	    <script src="https://maps.googleapis.com/maps/api/js?region=IN&language=in&key=AIzaSyCw_kA9o3rJ3PUiOixAMkCMP-OJivVhMPY"></script>
+        <script type="text/javascript">
+		    function initialize() {
+                initMap();
+      	    };
+            function initMap() {
+			    var map = getMap();
+
+			    setUnitedVisionMap(map);
+			    setPerusahaanMap(map);
+            }
+      	    google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
         <title>United Vision</title>
     </head>
     <body>
 		<div data-role="page" data-theme="a">
 			<div data-role="header" data-position="fixed">
-				<input id="cari-peta-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" />
+				<input id="cari-peta-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Nama Pelanggan" />
 			</div><!-- header -->
 			<div data-role="content" data-theme="a">
 				<div class="ui-grid-solo">
@@ -40,8 +60,18 @@
 								<label for="pelanggan-berhenti">Berhenti</label>
 								<input name="pelanggan-putus" id="pelanggan-putus" type="checkbox">
 								<label for="pelanggan-putus">Putus</label>
+								<input name="reset-map" id="reset-map" type="checkbox">
+								<label for="reset-map">Reset</label>
+                                <input type="hidden" id="aktif-state" value="0" />
+                                <input type="hidden" id="berhenti-state" value="0" />
+                                <input type="hidden" id="putus-state" value="0" />
 							</fieldset>
 						</form>
+					</div>
+				</div>
+				<div class="ui-grid-solo">
+					<div class="ui-block-a">
+				        <div id="map-canvas"></div>
 					</div>
 				</div>
 			</div><!-- content -->
@@ -56,27 +86,62 @@
 				<button onclick="location.href='map.html'" class="ui-btn" width="100">Peta</button>
 				<button onclick="location.href='gps.html'" class="ui-btn" width="100">Lokasi</button>
 				<button onclick="location.href='barcode.html'" class="ui-btn" width="100">Scan Barcode</button>
+				<button id="btn-logout" class="ui-btn" width="100">Logout</button>
 			</div><!-- navigation-panel -->
 		</div><!-- page -->
 
 		<script type="text/javascript">
-			$(document).ready(function(){
-				$('#cari-peta-pelanggan').change(function(){
-					alert('Cari Peta Pelanggan');
-				});
-				
-				$('#pelanggan-aktif').click(function(){
-					alert('Include Pelanggan Aktif');
-				});
-				
-				$('#pelanggan-berhenti').click(function(){
-					alert('Include Pelanggan Berhenti');
-				});
+      $(document).ready(function () {
+          $('#cari-peta-pelanggan').change(function () {
+              var nama = $('#cari-peta-pelanggan').val();
 
-				$('#pelanggan-putus').click(function(){
-					alert('Include Pelanggan Putus');
-				});
-			});
+              if (nama !== '' || nama !== undefined) {
+                  tampilkanPeta(nama);
+              }
+          });
+
+          $('#pelanggan-aktif').click(function () {
+              var state = $('#aktif-state').val();
+
+              if (state == 0) {
+                  $('#aktif-state').val(1);
+                  loadPelangganMap('aktif');
+              } else {
+                  $('#aktif-state').val(0);
+              }
+          });
+
+          $('#pelanggan-berhenti').click(function () {
+              var state = $('#berhenti-state').val();
+
+              if (state == 0) {
+                  $('#berhenti-state').val(1);
+                  loadPelangganMap('berhenti');
+              } else {
+                  $('#berhenti-state').val(0);
+              }
+          });
+          $('#pelanggan-putus').click(function () {
+              var state = $('#putus-state').val();
+
+              if (state == 0) {
+                  $('#putus-state').val(1);
+                  loadPelangganMap('putus');
+              } else {
+                  $('#putus-state').val(0);
+              }
+          });
+          $('#reset-map').click(function () {
+              $('#putus-aktif').val(0);
+              $('#putus-berhenti').val(0);
+              $('#putus-putus').val(0);
+
+              initMap();
+          });
+          $('#btn-logout').click(function () {
+              logout();
+          });
+      });
 		</script>
     </body>
 </html>

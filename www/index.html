@@ -5,12 +5,8 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
-		<link rel="stylesheet" href="css/uv-mobile.min.css" />
-		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-		<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
-		
 		<!-- jQuery Library -->
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
@@ -21,95 +17,20 @@
 		-->
 		<!-- UnitedVision's JS test -->
 		<script src="https://uvision-test.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+		<!-- UnitedVision-mobile's JS -->
+		<script src="js/unitedvision-mobile.js"></script>
 
         <title>UnitedVision</title>
     </head>
     <body>
-		<div data-role="page" data-theme="a">
-			<div data-role="header" data-position="fixed">
-				<h1>UnitedVision</h1>
-			</div><!-- header -->
-			<div data-role="content" data-theme="a">
-				<div data-role="collapsible">
-					<h4>Jumlah Pelanggan</h4>
-					<p>
-						<table class="table">
-							<tr>
-								<td width="200">Pelanggan Aktif</td>
-								<td width="10">:</td>
-								<td>
-									<b id="jumlahPelangganAktif"></b>
-									pelanggan
-								</td>
-							</tr>
-							<tr>
-								<td>Pelanggan Berhenti</td>
-								<td>:</td>
-								<td>
-									<b id="jumlahPelangganBerhenti"></b>
-									pelanggan
-								</td>
-							</tr>
-							<tr>
-								<td>Pelanggan Putus</td>
-								<td>:</td>
-								<td>
-									<b id="jumlahPelangganPutus"></b>
-									pelanggan
-								</td>
-							</tr>
-						</table>
-					</p>
-				</div>
-				<div data-role="collapsible">
-					<h4>Jumlah Pembayaran Pelanggan</h4>
-					<p>
-						<table class="table">
-							<tr>
-								<td width="200">Lunas</td>
-								<td width="10">:</td>
-								<td>
-									<b id="jumlahPelangganLunas"></b>
-									pelanggan
-								</td>
-							</tr>
-							<tr>
-								<td>Menunggak Wajar</td>
-								<td>:</td>
-								<td>
-									<b id="jumlahPelangganMenunggaknWajar"></b>
-									pelanggan
-								</td>
-							</tr>
-							<tr>
-								<td>Menunggak</td>
-								<td>:</td>
-								<td>
-									<b id="jumlahPelangganMenunggakTakWajar"></b>
-									pelanggan
-								</td>
-							</tr>
-						</table>
-					</p>
-				</div>
-			</div><!-- content -->
-			<div data-role="footer" data-position="fixed" style="height: 80px;">
-				<h1>Home</h1>
-				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 60px; width: 60px;">Home</a>
-				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 60px; width: 60px;">Menu</a>
-			</div><!-- footer -->
-			<div data-role="panel" id="navigation-panel" data-position="right" data-display="push" data-theme="b">
-				<button onclick="location.href='customer.html'" class="ui-btn" width="100">Pelanggan</button>
-				<button onclick="location.href='payment.html'" class="ui-btn" width="100">Pembayaran</button>
-				<button onclick="location.href='map.html'" class="ui-btn" width="100">Peta</button>
-				<button onclick="location.href='gps.html'" class="ui-btn" width="100">Lokasi</button>
-				<button onclick="location.href='barcode.html'" class="ui-btn" width="100">Scan Barcode</button>
-			</div><!-- navigation-panel -->
-		</div><!-- page -->
-
+        <p>Index</p>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				//RETRIEVE DATA FROM SERVICE AND SET THE BINDING
+                if (isLogin() === false) {
+                    window.location.href = 'login.html';
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
 			});
 		</script>
     </body>

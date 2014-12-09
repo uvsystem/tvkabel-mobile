@@ -15,9 +15,6 @@
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
 
-        <!-- Apache Cordova Library -->
-		<script type="text/javascript" src="cordova.js"></script>
-		
 		<!-- UnitedVision's JS production -->
         <!--
 		<script src="https://uvision.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
@@ -27,26 +24,79 @@
 		<!-- UnitedVision-mobile's JS -->
 		<script src="js/unitedvision-mobile.js"></script>
 
-        <title>United Vision</title>
+        <title>UnitedVision</title>
     </head>
     <body>
 		<div data-role="page" data-theme="a">
 			<div data-role="header" data-position="fixed">
-				<input id="cari-kordinat-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" />
+				<h1>UnitedVision</h1>
 			</div><!-- header -->
 			<div data-role="content" data-theme="a">
-				<div class="ui-grid-a">
-					<div class="ui-block-a"><label for="latitude">Latitude</label></div>
-					<div class="ui-block-b"><input id="latitude" type="text" readonly /></div>
-					<div class="ui-block-a"><label for="longitude">Longitude</label></div>
-					<div class="ui-block-b"><input id="longitude" type="text" readonly /></div>
+				<div data-role="collapsible">
+					<h4>Jumlah Pelanggan</h4>
+					<p>
+						<table class="table">
+							<tr>
+								<td width="150">Pelanggan Aktif</td>
+								<td width="10">:</td>
+								<td>
+									<b id="jumlah-pelanggan-aktif"></b>
+									pelanggan
+								</td>
+							</tr>
+							<tr>
+								<td>Pelanggan Berhenti</td>
+								<td>:</td>
+								<td>
+									<b id="jumlah-pelanggan-berhenti"></b>
+									pelanggan
+								</td>
+							</tr>
+							<tr>
+								<td>Pelanggan Putus</td>
+								<td>:</td>
+								<td>
+									<b id="jumlah-pelanggan-putus"></b>
+									pelanggan
+								</td>
+							</tr>
+						</table>
+					</p>
 				</div>
-				<div class="ui-grid-solo">
-					<div class="ui-block-a"><button id="btn-simpan-posisi">Simpan</button></div>
+				<div data-role="collapsible">
+					<h4>Jumlah Pembayaran Pelanggan</h4>
+					<p>
+						<table class="table">
+							<tr>
+								<td width="150">Lunas</td>
+								<td width="10">:</td>
+								<td>
+									<b id="jumlah-pelanggan-lunas"></b>
+									pelanggan
+								</td>
+							</tr>
+							<tr>
+								<td>Menunggak Wajar</td>
+								<td>:</td>
+								<td>
+									<b id="jumlah-pelanggan-menunggak-wajar"></b>
+									pelanggan
+								</td>
+							</tr>
+							<tr>
+								<td>Menunggak</td>
+								<td>:</td>
+								<td>
+									<b id="jumlah-pelanggan-menunggak-tak-wajar"></b>
+									pelanggan
+								</td>
+							</tr>
+						</table>
+					</p>
 				</div>
 			</div><!-- content -->
 			<div data-role="footer" data-position="fixed" style="height: 80px;">
-				<h1>Lokasi Pelanggan</h1>
+				<h1>Home</h1>
 				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 60px; width: 60px;">Home</a>
 				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 60px; width: 60px;">Menu</a>
 			</div><!-- footer -->
@@ -59,18 +109,26 @@
 				<button id="btn-logout" class="ui-btn" width="100">Logout</button>
 			</div><!-- navigation-panel -->
 		</div><!-- page -->
-		
+
 		<script type="text/javascript">
       $(document).ready(function () {
-          $('#cari-kordinat-pelanggan').change(function () {
-              var kodePelanggan = $('#cari-kordinat-pelanggan').val();
-              alert('Kunci Posisi Pelanggan ' + kodePelanggan);
-          });
-          $('#btn-simpan-posisi').click(function () {
-              alert('Simpan Posisi');
-          });
+          var onSuccess = function (result) {
+              var rekap = result.rekap;
+
+              $('#jumlah-pelanggan-aktif').html(rekap.jumlahPelangganAktif);
+              $('#jumlah-pelanggan-berhenti').html(rekap.jumlahPelangganBerhenti);
+              $('#jumlah-pelanggan-putus').html(rekap.jumlahPelangganPutus);
+              $('#jumlah-pelanggan-lunas').html(rekap.jumlahPelangganLunas);
+              $('#jumlah-pelanggan-menunggak-wajar').html(rekap.jumlahPelangganMenunggakWajar);
+              $('#jumlah-pelanggan-menunggak-tak-wajar').html(rekap.jumlahPelangganMenunggakTakWajar);
+
+              myApp.hidePleaseWait();
+          };
+
+          loadRekapPerusahaan(onSuccess, errorMessage);
           $('#btn-logout').click(function () {
               logout();
+              window.location.href = "index.html";
           });
       });
 		</script>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+
+		<link rel="stylesheet" href="css/uv-mobile.min.css" />
+		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
+		
+		<!-- jQuery Library -->
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <!-- Bootstrap's JS -->
+		<script src="js/bootstrap.min.js"></script>
+
+		<!-- UnitedVision's JS production -->
+        <!--
+		<script src="https://uvision.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+		-->
+		<!-- UnitedVision's JS test -->
+		<script src="https://uvision-test.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+		<!-- UnitedVision-mobile's JS -->
+		<script src="js/unitedvision-mobile.js"></script>
+
+        <title>UnitedVision</title>
+    </head>
+    <body>
+		<div data-role="page" data-theme="a">
+			<div data-role="header" data-position="fixed">
+				<h1>UnitedVision</h1>
+			</div><!-- header -->
+			<div data-role="content" data-theme="a">
+				<div class="ui-grid-a">
+					<div class="ui-block-a"><label for="latitude">Username</label></div>
+					<div class="ui-block-b"><input id="username" type="text" /></div>
+					<div class="ui-block-a"><label for="longitude">Password</label></div>
+					<div class="ui-block-b"><input id="password" type="password" /></div>
+				</div>
+				<div class="ui-grid-solo">
+					<div class="ui-block-a"><button id="btn-ok-login">Login</button></div>
+				</div>
+			</div><!-- content -->
+			<div data-role="footer" data-position="fixed" style="height: 80px;">
+				<h1>UnitedVision System</h1>
+			</div><!-- footer -->
+		</div><!-- page -->
+
+		<script type="text/javascript">
+      $(document).ready(function () {
+          $('#btn-ok-login').click(function () {
+              var username = $('#username').val();
+              var password = $('#password').val();
+
+              login(username, password);
+          });
+      });
+		</script>
+    </body>
+</html>

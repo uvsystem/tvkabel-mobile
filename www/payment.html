@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
 		<link rel="stylesheet" href="css/uv-mobile.min.css" />
 		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
@@ -21,6 +21,8 @@
 		-->
 		<!-- UnitedVision's JS test -->
 		<script src="https://uvision-test.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+		<!-- UnitedVision-mobile's JS -->
+		<script src="js/unitedvision-mobile.js"></script>
 
         <title>United Vision</title>
     </head>
@@ -30,13 +32,14 @@
 				<input id="cari-detail-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" />
 			</div><!-- header -->
 			<div data-role="content" data-theme="a">
+                <input type="hidden" id="id-pelanggan" />
 				<table>
 					<tr>
-						<td>Nama Pelanggan</td>
+						<td>Nama</td>
 						<td colspan="2"><input type="text" id="nama-pelanggan" readonly /></td>
 					</tr>
 					<tr>
-						<td>Profesi Pelanggan</td>
+						<td>Profesi</td>
 						<td colspan="2"><input type="text" id="profesi-pelanggan" readonly /></td>
 					</tr>
 					<tr>
@@ -45,8 +48,8 @@
 						<td><input type="text" id="tahun" readonly /></td>
 					</tr>
 					<tr>
-						<td>Jumlah Pembayaran</td>
-						<td colspan="2"><input type="text" id="jumlah-pembayaran" /></td>
+						<td>Iuran</td>
+						<td colspan="2"><input type="text" id="iuran-pelanggan" /></td>
 					</tr>
 				</table>
 				<div class="ui-grid-a">
@@ -65,23 +68,69 @@
 				<button onclick="location.href='map.html'" class="ui-btn" width="100">Peta</button>
 				<button onclick="location.href='gps.html'" class="ui-btn" width="100">Lokasi</button>
 				<button onclick="location.href='barcode.html'" class="ui-btn" width="100">Scan Barcode</button>
+				<button id="btn-logout" class="ui-btn" width="100">Logout</button>
 			</div><!-- navigation-panel -->
 		</div><!-- page -->
 
 		<script type="text/javascript">
-			$(document).ready(function(){
-				$('#cari-detail-pelanggan').change(function(){
-					alert('Cari Pelanggan');
-				});
-				
-				$('#btn-simpan').click(function(){
-					alert('Simpan Pembayaran');
-				});
-				
-				$('#btn-reset').click(function(){
-					alert('Reset Form');
-				});
-			});
+      $(document).ready(function () {
+          $('#cari-detail-pelanggan').change(function () {
+              var kode = $('#cari-detail-pelanggan').val();
+
+              if (kode !== '' || kode !== undefined) {
+                  var onPelangganSuccess = function (result) {
+                      var pelanggan = result.model;
+
+                      $('#id-pelanggan').val(pelanggan.id);
+                      $('#cari-detail-pelanggan').val(pelanggan.kode);
+                      $('#nama-pelanggan').val(pelanggan.nama);
+                      $('#iuran-pelanggan').val(pelanggan.iuran);
+                      $('#profesi-pelanggan').val(pelanggan.profesi);
+                  };
+                  loadPelangganByKode(kode, onPelangganSuccess, errorMessage);
+                  loadTagihanByKode(kode, onTagihanSuccess, errorMessage);
+              }
+          });
+
+          $('#btn-simpan').click(function () {
+              var idPelanggan = $('#id-pelanggan').val();
+
+              if (idPelanggan != 0) {
+                  var operator = getOperator();
+                  var idPegawai = operator.id;
+                  var jumlahPembayaran = $("#iuran-pelanggan").val();
+                  var data = {
+                      idPelanggan: idPelanggan,
+                      idPegawai: idPegawai,
+                      jumlahPembayaran: jumlahPembayaran
+                  };
+                  var onSuccess = function (result) {
+                      if (result.message === 'Berhasil!') {
+                          alert('Berhasil Menyimpan Pembayaran');
+                      } else {
+                          alert(result.message);
+                      }
+                  loadTagihanById(idPelanggan, onTagihanSuccess, errorMessage);
+                  };
+                  savePembayaran(data, onSuccess, errorMessage);
+              } else {
+                  alert("Silahkan Pilih Pelanggan!");
+              }
+          });
+
+          $('#btn-reset').click(function () {
+              $('#id-pelanggan').val('');
+              $('#cari-detail-pelanggan').val('');
+              $('#nama-pelanggan').val('');
+              $('#iuran-pelanggan').val('');
+              $('#profesi-pelanggan').val('');
+              $('#bulan').val('');
+              $('#tahun').val('');
+          });
+          $('#btn-logout').click(function () {
+              logout();
+          });
+      });
 		</script>
     </body>
 </html>
