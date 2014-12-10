@@ -4,10 +4,10 @@
 myApp = function () {
     return {
         showPleaseWait: function () {
-            $.mobile.loading();
+            $.mobile.loading('show');
         },
         hidePleaseWait: function () {
-            $.mobile.loading();
+            $.mobile.loading('hide');
         }
     };
 } ();

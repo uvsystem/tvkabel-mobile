@@ -32,7 +32,9 @@
 	    <script src="https://maps.googleapis.com/maps/api/js?region=IN&language=in&key=AIzaSyCw_kA9o3rJ3PUiOixAMkCMP-OJivVhMPY"></script>
         <script type="text/javascript">
 		    function initialize() {
+                myApp.showPleaseWait();
                 initMap();
+                myApp.hidePleaseWait();
       	    };
             function initMap() {
 			    var map = getMap();
