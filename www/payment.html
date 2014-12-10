@@ -29,38 +29,33 @@
     <body>
 		<div data-role="page" data-theme="a">
 			<div data-role="header" data-position="fixed">
-				<input id="cari-detail-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" />
+				<input id="cari-detail-pelanggan" type="search" style="height: 45px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" autofocus="true" />
 			</div><!-- header -->
 			<div data-role="content" data-theme="a">
                 <input type="hidden" id="id-pelanggan" />
-				<table>
-					<tr>
-						<td>Nama</td>
-						<td colspan="2"><input type="text" id="nama-pelanggan" readonly /></td>
-					</tr>
-					<tr>
-						<td>Profesi</td>
-						<td colspan="2"><input type="text" id="profesi-pelanggan" readonly /></td>
-					</tr>
-					<tr>
-						<td>Tagihan</td>
-						<td><input type="text" id="bulan" readonly /></td>
-						<td><input type="text" id="tahun" readonly /></td>
-					</tr>
-					<tr>
-						<td>Iuran</td>
-						<td colspan="2"><input type="text" id="iuran-pelanggan" /></td>
-					</tr>
-				</table>
-				<div class="ui-grid-a">
+				<div class="ui-grid-b ui-responsive">
+					<div class="ui-block-a"><label for="nama-pelanggan">Nama</label></div>
+					<div class="ui-block-b"><input type="text" id="nama-pelanggan" placeholder="Nama Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="profesi-pelanggan">Profesi</label></div>
+					<div class="ui-block-b"><input type="text" id="profesi-pelanggan" placeholder="Profesi Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="iuran-pelanggan">Iuran</label></div>
+					<div class="ui-block-b"><input type="text" id="iuran-pelanggan" placeholder="Iuran Pelanggan" /></div>
+                </div>
+				<div class="ui-grid-b ui-responsive">
+					<div class="ui-block-a"><label for="tagihan-pelanggan">Tagihan</label></div>
+					<div class="ui-block-b"><input type="text" id="bulan" placeholder="Bulan" readonly="true" /></div>
+					<div class="ui-block-c"><input type="text" id="tahun" placeholder="Tahun" readonly="true" /></div>
+                </div>
+				<div class="ui-grid-b">
 					<div class="ui-block-a"><button id="btn-simpan">Simpan</button></div>
-					<div class="ui-block-b"><button id="btn-reset">Reset</button></div>
+					<div class="ui-block-b">&nbsp;</div>
+					<div class="ui-block-c"><button id="btn-reset">Reset</button></div>
 				</div><!-- control -->
 			</div><!-- content -->
-			<div data-role="footer" data-position="fixed" style="height: 80px;">
+			<div data-role="footer" data-position="fixed" style="height: 60px;">
 				<h1>Pembayaran</h1>
-				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 60px; width: 60px;">Home</a>
-				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 60px; width: 60px;">Menu</a>
+				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 40px; width: 40px;">Home</a>
+				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 40px; width: 40px;">Menu</a>
 			</div><!-- footer -->
 			<div data-role="panel" id="navigation-panel" data-position="right" data-display="push" data-theme="b">
 				<button onclick="location.href='customer.html'" class="ui-btn" width="100">Pelanggan</button>
@@ -77,7 +72,7 @@
           $('#cari-detail-pelanggan').change(function () {
               var kode = $('#cari-detail-pelanggan').val();
 
-              if (kode !== '' || kode !== undefined) {
+              if (kode !== '') {
                   var onPelangganSuccess = function (result) {
                       var pelanggan = result.model;
 
@@ -89,6 +84,14 @@
                   };
                   loadPelangganByKode(kode, onPelangganSuccess, errorMessage);
                   loadTagihanByKode(kode, onTagihanSuccess, errorMessage);
+              } else {
+                      $('#id-pelanggan').val('');
+                      $('#cari-detail-pelanggan').val('');
+                      $('#nama-pelanggan').val('');
+                      $('#iuran-pelanggan').val('');
+                      $('#profesi-pelanggan').val('');
+                      $('#bulan').val('');
+                      $('#tahun').val('');
               }
           });
 
@@ -110,7 +113,7 @@
                       } else {
                           alert(result.message);
                       }
-                  loadTagihanById(idPelanggan, onTagihanSuccess, errorMessage);
+                      loadTagihanById(idPelanggan, onTagihanSuccess, errorMessage);
                   };
                   savePembayaran(data, onSuccess, errorMessage);
               } else {

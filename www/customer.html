@@ -29,22 +29,30 @@
     <body>
 		<div data-role="page" data-theme="a">
 			<div data-role="header" data-position="fixed">
-				<input id="cari-data-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" />
+				<input id="cari-data-pelanggan" type="search" style="height: 45px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Kode Pelanggan" autofocus="true" />
 			</div><!-- header -->
 			<div data-role="content" data-theme="a">
-				<form>
-					<input id="nama-pelanggan" type="text" placeholder="Nama Pelanggan" readonly />
-					<input id="profesi-pelanggan" type="text" placeholder="Profesi Pelanggan" readonly />
-					<input id="alamat-pelanggan" type="text" placeholder="Alamat Pelanggan" readonly />
-					<input id="kontak-pelanggan" type="text" placeholder="Kontak Pelanggan" readonly />
-					<input id="iuran-pelanggan" type="text" placeholder="Iuran Pelanggan" readonly />
-					<input id="tunggakan-pelanggan" type="text" placeholder="Tunggakan Pelanggan" readonly />
-				</form>
+				<div class="ui-grid-a ui-responsive">
+					<div class="ui-block-a"><label for="nama-pelanggan">Nama</label></div>
+					<div class="ui-block-b"><input id="nama-pelanggan" type="text" placeholder="Nama Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="profesi-pelanggan">Profesi</label></div>
+					<div class="ui-block-b"><input id="profesi-pelanggan" type="text" placeholder="Profesi Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="alamat-pelanggan">Alamat</label></div>
+					<div class="ui-block-b"><input id="alamat-pelanggan" type="text" placeholder="Alamat Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="kontak-pelanggan">Kontak</label></div>
+					<div class="ui-block-b"><input id="kontak-pelanggan" type="text" placeholder="Kontak Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="status-pelanggan">Status</label></div>
+					<div class="ui-block-b"><input id="status-pelanggan" type="text" placeholder="Status Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="iuran-pelanggan">Iuran</label></div>
+					<div class="ui-block-b"><input id="iuran-pelanggan" type="text" placeholder="Iuran Pelanggan" readonly="true" /></div>
+					<div class="ui-block-a"><label for="tunggakan-pelanggan">Tunggakan</label></div>
+					<div class="ui-block-b"><input id="tunggakan-pelanggan" type="text" placeholder="Tunggakan Pelanggan" readonly="true" /></div>
+				</div>
 			</div><!-- content -->
-			<div data-role="footer" data-position="fixed" style="height: 80px;">
+			<div data-role="footer" data-position="fixed" style="height: 60px;">
 				<h1>Data Pelanggan</h1>
-				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 60px; width: 60px;">Home</a>
-				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 60px; width: 60px;">Menu</a>
+				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 40px; width: 40px;">Home</a>
+				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 40px; width: 40px;">Menu</a>
 			</div><!-- footer -->
 			<div data-role="panel" id="navigation-panel" data-position="right" data-display="push" data-theme="b">
 				<button onclick="location.href='customer.html'" class="ui-btn" width="100">Pelanggan</button>
@@ -61,7 +69,7 @@
           $('#cari-data-pelanggan').change(function () {
               var kode = $('#cari-data-pelanggan').val();
 
-              if (kode !== '' || kode !== undefined) {
+              if (kode !== '') {
                   var onSuccess = function (result) {
                       var pelanggan = result.model;
                       var alamat = pelanggan.namaKelurahan + ', Lingk. ' + pelanggan.lingkungan;
@@ -71,11 +79,20 @@
                       $('#profesi-pelanggan').val(pelanggan.profesi);
                       $('#alamat-pelanggan').val(alamat);
                       $('#kontak-pelanggan').val(kontak);
+                      $('#status-pelanggan').val(pelanggan.status);
                       $('#iuran-pelanggan').val(pelanggan.iuran);
                       $('#tunggakan-pelanggan').val(pelanggan.tunggakan);
                   }
 
                   loadPelangganByKode(kode, onSuccess, errorMessage);
+              } else {
+                      $('#nama-pelanggan').val('');
+                      $('#profesi-pelanggan').val('');
+                      $('#alamat-pelanggan').val('');
+                      $('#kontak-pelanggan').val('');
+                      $('#status-pelanggan').val('');
+                      $('#iuran-pelanggan').val('');
+                      $('#tunggakan-pelanggan').val('');
               }
           });
           $('#btn-logout').click(function () {

@@ -25,7 +25,7 @@
 		<script src="js/unitedvision-mobile.js"></script>
 
 	    <style type="text/css">
-		    #map-canvas { height: 700px; margin: 0; padding: 0; border: 0;}
+		    #map-canvas { min-height: 67vh;max-height: 700px; margin: 0; padding: 0; border: 1;}
 	    </style>
 
 	    <!-- Google Map's API -->
@@ -49,12 +49,14 @@
     <body>
 		<div data-role="page" data-theme="a">
 			<div data-role="header" data-position="fixed">
-				<input id="cari-peta-pelanggan" type="search" style="height: 60px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Nama Pelanggan" />
+				<input id="cari-peta-pelanggan" type="search" style="height: 45px; margin-left: 10px; margin-right: 10px;" placeholder="Masukan Nama Pelanggan" />
 			</div><!-- header -->
 			<div data-role="content" data-theme="a">
 				<div class="ui-grid-solo">
 					<div class="ui-block-a">
-						<form>
+                            <input type="hidden" id="aktif-state" value="0" />
+                            <input type="hidden" id="berhenti-state" value="0" />
+                            <input type="hidden" id="putus-state" value="0" />
 							<fieldset data-role="controlgroup" data-type="horizontal">
 								<input name="pelanggan-aktif" id="pelanggan-aktif" type="checkbox">
 								<label for="pelanggan-aktif">Aktif</label>
@@ -64,11 +66,7 @@
 								<label for="pelanggan-putus">Putus</label>
 								<input name="reset-map" id="reset-map" type="checkbox">
 								<label for="reset-map">Reset</label>
-                                <input type="hidden" id="aktif-state" value="0" />
-                                <input type="hidden" id="berhenti-state" value="0" />
-                                <input type="hidden" id="putus-state" value="0" />
 							</fieldset>
-						</form>
 					</div>
 				</div>
 				<div class="ui-grid-solo">
@@ -77,10 +75,10 @@
 					</div>
 				</div>
 			</div><!-- content -->
-			<div data-role="footer" data-position="fixed" style="height: 80px;">
+			<div data-role="footer" data-position="fixed" style="height: 60px;">
 				<h1>Peta Pelanggan</h1>
-				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 60px; width: 60px;">Home</a>
-				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 60px; width: 60px;">Menu</a>
+				<a class="ui-btn ui-btn-left ui-btn-icon-notext ui-shadow ui-icon-home ui-btn-corner-all" href="index.html" style="height: 40px; width: 40px;">Home</a>
+				<a class="ui-btn ui-btn-right ui-btn-icon-notext ui-shadow ui-icon-grid ui-btn-corner-all" href="#navigation-panel" style="height: 40px; width: 40px;">Menu</a>
 			</div><!-- footer -->
 			<div data-role="panel" id="navigation-panel" data-position="right" data-display="push" data-theme="b">
 				<button onclick="location.href='customer.html'" class="ui-btn" width="100">Pelanggan</button>
@@ -97,7 +95,7 @@
           $('#cari-peta-pelanggan').change(function () {
               var nama = $('#cari-peta-pelanggan').val();
 
-              if (nama !== '' || nama !== undefined) {
+              if (nama !== '') {
                   tampilkanPeta(nama);
               }
           });
