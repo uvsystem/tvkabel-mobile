@@ -25,13 +25,13 @@
     <body>
         <p>Index</p>
 		<script type="text/javascript">
-			$(document).ready(function(){
-                if (isLogin() === false) {
-                    window.location.href = 'login.html';
-                } else {
-                    window.location.href = 'dashboard.html';
-                }
-			});
+          $(document).ready(function () {
+              if (isLogin()) {
+                  window.location.href = 'dashboard.html';
+              } else {
+                  window.location.href = 'login.html';
+              }
+          });
 		</script>
     </body>
 </html>
