@@ -16,16 +16,12 @@
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
 
 		<!-- UnitedVision's JS production -->
-        <!--
 		<script src="https://uvision.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
-		-->
-		<!-- UnitedVision's JS test -->
-		<script src="https://uvision-test.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
 		<!-- UnitedVision-mobile's JS -->
 		<script src="js/unitedvision-mobile.js"></script>
 
 	    <style type="text/css">
-		    #map-canvas { min-height: 67vh;max-height: 700px; margin: 0; padding: 0; border: 1;}
+		    #map-canvas { position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px;}
 	    </style>
 
 	    <!-- Google Map's API -->
@@ -53,26 +49,7 @@
 			</div><!-- header -->
 			<div data-role="content" data-theme="a">
 				<div class="ui-grid-solo">
-					<div class="ui-block-a">
-                            <input type="hidden" id="aktif-state" value="0" />
-                            <input type="hidden" id="berhenti-state" value="0" />
-                            <input type="hidden" id="putus-state" value="0" />
-							<fieldset data-role="controlgroup" data-type="horizontal">
-								<input name="pelanggan-aktif" id="pelanggan-aktif" type="checkbox">
-								<label for="pelanggan-aktif">Aktif</label>
-								<input name="pelanggan-berhenti" id="pelanggan-berhenti" type="checkbox">
-								<label for="pelanggan-berhenti">Berhenti</label>
-								<input name="pelanggan-putus" id="pelanggan-putus" type="checkbox">
-								<label for="pelanggan-putus">Putus</label>
-								<input name="reset-map" id="reset-map" type="checkbox">
-								<label for="reset-map">Reset</label>
-							</fieldset>
-					</div>
-				</div>
-				<div class="ui-grid-solo">
-					<div class="ui-block-a">
 				        <div id="map-canvas"></div>
-					</div>
 				</div>
 			</div><!-- content -->
 			<div data-role="footer" data-position="fixed" style="height: 60px;">
@@ -87,11 +64,57 @@
 				<button onclick="location.href='gps.html'" class="ui-btn" width="100">Lokasi</button>
 				<button onclick="location.href='barcode.html'" class="ui-btn" width="100">Scan Barcode</button>
 				<button id="btn-logout" class="ui-btn" width="100">Logout</button>
+                <p>Tampilan</p>
+				<button id="btn-aktif" class="ui-btn" width="100">Aktif</button>
+				<button id="btn-berhenti" class="ui-btn" width="100">Berhenti</button>
+				<button id="btn-putus" class="ui-btn" width="100">Putus</button>
+				<button id="btn-reset" class="ui-btn" width="100">Reset</button>
 			</div><!-- navigation-panel -->
 		</div><!-- page -->
 
 		<script type="text/javascript">
+      var selectOption = function () {
+          return {
+              aktif: function () {
+                  loadPelangganMap('aktif');
+              },
+              berhenti: function () {
+                  loadPelangganMap('berhenti');
+              },
+              putus: function () {
+                  loadPelangganMap('putus');
+              },
+              pelanggan: function () {
+                  $.mobile.changePage('#dialog', 'pop', false, true);
+              },
+              reset: function () {
+                  $('#cari-peta-pelanggan').val('');
+                  initMap();
+              }
+          }
+      } ();
+
       $(document).ready(function () {
+          $('#btn-aktif').click(function () {
+              $("#navigation-panel").panel("close");
+              selectOption.aktif();
+          });
+
+          $('#btn-berhenti').click(function () {
+              $("#navigation-panel").panel("close");
+              selectOption.berhenti();
+          });
+
+          $('#btn-putus').click(function () {
+              $("#navigation-panel").panel("close");
+              selectOption.putus();
+          });
+
+          $('#btn-reset').click(function () {
+              $("#navigation-panel").panel("close");
+              selectOption.reset();
+          });
+
           $('#cari-peta-pelanggan').change(function () {
               var nama = $('#cari-peta-pelanggan').val();
 
@@ -100,44 +123,6 @@
               }
           });
 
-          $('#pelanggan-aktif').click(function () {
-              var state = $('#aktif-state').val();
-
-              if (state == 0) {
-                  $('#aktif-state').val(1);
-                  loadPelangganMap('aktif');
-              } else {
-                  $('#aktif-state').val(0);
-              }
-          });
-
-          $('#pelanggan-berhenti').click(function () {
-              var state = $('#berhenti-state').val();
-
-              if (state == 0) {
-                  $('#berhenti-state').val(1);
-                  loadPelangganMap('berhenti');
-              } else {
-                  $('#berhenti-state').val(0);
-              }
-          });
-          $('#pelanggan-putus').click(function () {
-              var state = $('#putus-state').val();
-
-              if (state == 0) {
-                  $('#putus-state').val(1);
-                  loadPelangganMap('putus');
-              } else {
-                  $('#putus-state').val(0);
-              }
-          });
-          $('#reset-map').click(function () {
-              $('#putus-aktif').val(0);
-              $('#putus-berhenti').val(0);
-              $('#putus-putus').val(0);
-
-              initMap();
-          });
           $('#btn-logout').click(function () {
               logout();
           });
