@@ -16,7 +16,7 @@
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
 
 		<!-- UnitedVision's JS production -->
-		<script src="https://uvision.whelastic.net/tvkabel/resources/js/unitedvision.js"></script>
+		<script src="js/unitedvision.js"></script>
 		<!-- UnitedVision-mobile's JS -->
 		<script src="js/unitedvision-mobile.js"></script>
 
@@ -30,17 +30,19 @@
 			<div data-role="content" data-theme="a">
                 <input type="hidden" id="id-pelanggan" />
 				<div class="ui-grid-b ui-responsive">
-					<div class="ui-block-a"><label for="nama-pelanggan">Nama</label></div>
+					<div class="ui-block-a"><label for="nama-pelanggan">Nama :</label></div>
 					<div class="ui-block-b"><input type="text" id="nama-pelanggan" placeholder="Nama Pelanggan" readonly="true" /></div>
-					<div class="ui-block-a"><label for="profesi-pelanggan">Profesi</label></div>
+					<div class="ui-block-a"><label for="profesi-pelanggan">Profesi :</label></div>
 					<div class="ui-block-b"><input type="text" id="profesi-pelanggan" placeholder="Profesi Pelanggan" readonly="true" /></div>
-					<div class="ui-block-a"><label for="iuran-pelanggan">Iuran</label></div>
+					<div class="ui-block-a"><label for="iuran-pelanggan">Iuran :</label></div>
 					<div class="ui-block-b"><input type="text" id="iuran-pelanggan" placeholder="Iuran Pelanggan" /></div>
                 </div>
 				<div class="ui-grid-b ui-responsive">
-					<div class="ui-block-a"><label for="tagihan-pelanggan">Tagihan</label></div>
+					<div class="ui-block-a"><label for="tagihan-pelanggan">Tagihan :</label></div>
 					<div class="ui-block-b"><input type="text" id="bulan" placeholder="Bulan" readonly="true" /></div>
 					<div class="ui-block-c"><input type="text" id="tahun" placeholder="Tahun" readonly="true" /></div>
+					<div class="ui-block-a"><label for="jumlah-bulan-pelanggan">Jumlah Bulan :</label></div>
+					<div class="ui-block-b"><input type="text" id="jumlah-bulan-pelanggan" placeholder="Masukkan Jumlah Bulan" /></div>
                 </div>
 				<div class="ui-grid-b">
 					<div class="ui-block-a"><button id="btn-simpan">Simpan</button></div>
@@ -81,13 +83,13 @@
                   loadPelangganByKode(kode, onPelangganSuccess, errorMessage);
                   loadTagihanByKode(kode, onTagihanSuccess, errorMessage);
               } else {
-                      $('#id-pelanggan').val('');
-                      $('#cari-detail-pelanggan').val('');
-                      $('#nama-pelanggan').val('');
-                      $('#iuran-pelanggan').val('');
-                      $('#profesi-pelanggan').val('');
-                      $('#bulan').val('');
-                      $('#tahun').val('');
+                  $('#id-pelanggan').val('');
+                  $('#cari-detail-pelanggan').val('');
+                  $('#nama-pelanggan').val('');
+                  $('#iuran-pelanggan').val('');
+                  $('#profesi-pelanggan').val('');
+                  $('#bulan').val('');
+                  $('#tahun').val('');
               }
           });
 
@@ -98,10 +100,12 @@
                   var operator = getOperator();
                   var idPegawai = operator.id;
                   var jumlahPembayaran = $("#iuran-pelanggan").val();
+                  var jumlahBulan = $('#jumlah-bulan-pelanggan').val();
                   var data = {
                       idPelanggan: idPelanggan,
                       idPegawai: idPegawai,
-                      jumlahPembayaran: jumlahPembayaran
+                      jumlahPembayaran: jumlahPembayaran,
+                      jumlahBulan: jumlahBulan
                   };
                   var onSuccess = function (result) {
                       if (result.message === 'Berhasil!') {
@@ -109,7 +113,6 @@
                       } else {
                           alert(result.message);
                       }
-                      loadTagihanById(idPelanggan, onTagihanSuccess, errorMessage);
                   };
                   savePembayaran(data, onSuccess, errorMessage);
               } else {
