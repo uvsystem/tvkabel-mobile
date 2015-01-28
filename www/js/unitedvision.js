@@ -440,3 +440,59 @@ function tampilkanPeta(query) {
 	
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + query, success, errorMessage);
 }
+
+//Months definiton
+var month = function () {
+    return {
+        getName: function (index) {
+            if (index > 12)
+                index -= 12;
+            if (index < 1)
+                index += 12;
+
+            switch (index) {
+                case 1: return 'January'
+                case 2: return 'February'
+                case 3: return 'March'
+                case 4: return 'April'
+                case 5: return 'May'
+                case 6: return 'June'
+                case 7: return 'July'
+                case 8: return 'August'
+                case 9: return 'September'
+                case 10: return 'October'
+                case 11: return 'November'
+                case 12: return 'December'
+            }
+        },
+        getIndex: function (name) {
+            switch (name) {
+                case 'January': return 1
+                case 'February': return 2
+                case 'March': return 3
+                case 'April': return 4
+                case 'May': return 5
+                case 'June': return 6
+                case 'July': return 7
+                case 'August': return 8
+                case 'September': return 9
+                case 'October': return 10
+                case 'November': return 11
+                case 'December': return 12
+            }
+        }
+    };
+} ();
+
+function constructPartMessage(bulan, jumlahBulan) {
+    var partMessage = bulan;
+    var intBulan = month.getIndex(bulan);
+
+    var i;
+    for (i = 1; i < jumlahBulan; i++) {
+        intBulan++;
+        partMessage += ', ' + month.getName(intBulan);
+    }
+
+    return partMessage;
+}

@@ -42,7 +42,7 @@
 					<div class="ui-block-b"><input type="text" id="bulan" placeholder="Bulan" readonly="true" /></div>
 					<div class="ui-block-c"><input type="text" id="tahun" placeholder="Tahun" readonly="true" /></div>
 					<div class="ui-block-a"><label for="jumlah-bulan-pelanggan">Jumlah Bulan :</label></div>
-					<div class="ui-block-b"><input type="text" id="jumlah-bulan-pelanggan" placeholder="Masukkan Jumlah Bulan" /></div>
+					<div class="ui-block-b"><input type="text" id="jumlah-bulan-pelanggan" placeholder="Masukkan Jumlah Bulan" value="1" /></div>
                 </div>
 				<div class="ui-grid-b">
 					<div class="ui-block-a"><button id="btn-simpan">Simpan</button></div>
@@ -67,12 +67,14 @@
 
 		<script type="text/javascript">
       $(document).ready(function () {
+          var pelanggan;
+
           $('#cari-detail-pelanggan').change(function () {
               var kode = $('#cari-detail-pelanggan').val();
 
               if (kode !== '') {
                   var onPelangganSuccess = function (result) {
-                      var pelanggan = result.model;
+                      pelanggan = result.model;
 
                       $('#id-pelanggan').val(pelanggan.id);
                       $('#cari-detail-pelanggan').val(pelanggan.kode);
@@ -101,6 +103,7 @@
                   var idPegawai = operator.id;
                   var jumlahPembayaran = $("#iuran-pelanggan").val();
                   var jumlahBulan = $('#jumlah-bulan-pelanggan').val();
+                  var bulan = $('#bulan').val();
                   var data = {
                       idPelanggan: idPelanggan,
                       idPegawai: idPegawai,
@@ -109,7 +112,9 @@
                   };
                   var onSuccess = function (result) {
                       if (result.message === 'Berhasil!') {
-                          alert('Berhasil Menyimpan Pembayaran');
+                          var partMessage = constructPartMessage(bulan, jumlahBulan);
+                          alert('Berhasil Menyimpan Pembayaran untuk bulan ' + partMessage);
+                          sendSMS(pelanggan, partMessage);
                       } else {
                           alert(result.message);
                       }
@@ -128,6 +133,7 @@
               $('#profesi-pelanggan').val('');
               $('#bulan').val('');
               $('#tahun').val('');
+              pelanggan = null;
           });
           $('#btn-logout').click(function () {
               logout();

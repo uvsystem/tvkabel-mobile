@@ -14,7 +14,7 @@ myApp = function () {
 var onTagihanSuccess = function (result) {
     var tagihan = result.model;
 
-    $('#bulan').val(tagihan.bulan);
+    $('#bulan').val(tagihan.bulanStr);
     $('#tahun').val(tagihan.tahun);
 
     alert(tagihan.bulan + '-' + tagihan.tahun);
@@ -74,4 +74,43 @@ function resetPelangganDetail() {
 	$('#tanggal-mulai-detail-pelanggan').val('');
 	$('#jumlah-tv-detail-pelanggan').val('');
 	$('#iuran-detail-pelanggan').val('');
+}
+
+function sendSMS(pelanggan, partMessage) {
+    if (pelanggan != null && pelanggan != undefined) {
+        var hp = pelanggan.hp;
+        if (hp != null && hp != undefined && hp != '') {
+            hp = constructPhoneNumber(hp);
+            sendSMSWithNomor(hp, partMessage);
+        }
+        var telepon = pelanggan.telepon;
+        if (telepon != null && telepon != undefined && telepon != '' && telepon.length > 10) {
+            telepon = constructPhoneNumber(telepon);
+            sendSMSWithNomor(telepon, partMessage);
+        }
+    }
+}
+
+function constructPhoneNumber(number) {
+    number = number.replace(' ', '');
+    number = number.replace(' ', '');
+
+    number = number.replace('-', '');
+    number = number.replace('-', '');
+
+    return number;
+}
+
+function sendSMSWithNomor(nomor, partMessage) {
+    var namaPerusahaan = getPerusahaan().nama;
+    var messageInfo = {
+        phoneNumber: nomor,
+        textMessage: 'Yth. Pelanggan TV Kabel ' + namaPerusahaan + ', terima kasih atas pembayaran tagihan bulan ' + partMessage + ' anda. SMS ini bisa menjadi bukti pembayaran. Terima kasih.'
+    };
+
+    sms.sendMessage(messageInfo, function (message) {
+        alert("SMS terkirim");
+    }, function (error) {
+        alert("SMS tidak terkirim. code: " + error.code + ", message: " + error.message);
+    });
 }
