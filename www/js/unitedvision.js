@@ -9,7 +9,7 @@
  * Version: 4.0.*
  */
 
-var target = 'https://uvision.whelastic.net/tvkabel/api';
+var target = 'https://uvision-test.whelastic.net/tvkabel/api';
 
 // Please wait variable.
 // This will/must be set from application's specific script.
@@ -467,24 +467,25 @@ var month = function () {
         },
         getIndex: function (name) {
             switch (name) {
-                case 'January': return 1
-                case 'February': return 2
-                case 'March': return 3
-                case 'April': return 4
-                case 'May': return 5
-                case 'June': return 6
-                case 'July': return 7
-                case 'August': return 8
-                case 'September': return 9
-                case 'October': return 10
-                case 'November': return 11
-                case 'December': return 12
+                case 'january': return 1
+                case 'february': return 2
+                case 'march': return 3
+                case 'april': return 4
+                case 'may': return 5
+                case 'june': return 6
+                case 'july': return 7
+                case 'august': return 8
+                case 'september': return 9
+                case 'october': return 10
+                case 'november': return 11
+                case 'december': return 12
             }
         }
     };
 } ();
 
 function constructPartMessage(bulan, jumlahBulan) {
+    bulan = bulan.toLowerCase();
     var partMessage = bulan;
     var intBulan = month.getIndex(bulan);
 
