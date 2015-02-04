@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.unitedvision.tvkabel.mobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>UvMobile</name>
+<widget id="com.unitedvision.tvkabel.mobile" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>UnitedVision</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Aplikasi mobile dari United Vision untuk client.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="dkakunsi.unitedvision@gmail.com" href="https://uvs.web.id">
+        United Vision System
     </author>
     <content src="index.html" />
     <access origin="*" />
