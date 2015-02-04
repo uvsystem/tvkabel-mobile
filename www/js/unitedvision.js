@@ -9,7 +9,7 @@
  * Version: 4.0.*
  */
 
-var target = 'https://uvision-test.whelastic.net/tvkabel/api';
+var target = 'https://uvision.whelastic.net/tvkabel/api';
 
 // Please wait variable.
 // This will/must be set from application's specific script.
@@ -237,6 +237,9 @@ function passivatePelanggan(id, success, error) {
 function banPelanggan(id, success, error) {
 	save(target + '/pelanggan/banned/master', id, 'PUT', success, error);
 }
+function freePelanggan(id, success, error) {
+	save(target + '/pelanggan/free/master', id, 'PUT', success, error);
+}
 function deletePelanggan(id, success, error) {
 	save(target + '/pelanggan/removed/master', id, 'PUT', success, error);
 }
@@ -260,6 +263,12 @@ function loadListPelangganByNama(nama, page, success, error) {
 }
 function loadListPelangganByNamaAndStatus(nama, status, page, success, error) {
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + nama + '/status/' + status + '/page/' + page, success, error);
+}
+function loadListPelangganByNomor(nomor, page, success, error) {
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nomor/' + nomor + '/page/' + page, success, error);
+}
+function loadListPelangganByNomorAndStatus(nomor, status, page, success, error) {
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nomor/' + nomor + '/status/' + status + '/page/' + page, success, error);
 }
 function loadListPelangganByStatus(status, page, success, error) {
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status + '/page/' + page, success, error);
@@ -329,6 +338,9 @@ function rekapTunggakan(data) {
 function kartuPelanggan(data) {
     submitPost(target + '/print/pelanggan/kartu', data);    
 }
+function kartuPelangganEmpty(data) {
+    submitPost(target + '/print/pelanggan/kartu/empty', data);    
+}
 function kartuPelangganAktif(data) {
     submitPost(target + '/print/pelanggan/kartu/aktif', data);
 }
@@ -349,38 +361,48 @@ var putus_icon = 'images/putus.png';
 var studio_icon = 'images/studio.png';
 var warning_icon = 'images/warning.png';
 var unitedvision_icon = 'images/unitedvision.png';
-
 function getIcon(status) {
 	switch(status) {
 		case 'aktif': return aktif_icon;
     	case 'berhenti':return berhenti_icon;
     	case 'putus': return putus_icon;
+    	case 'gratis': return aktif_icon;
     }
 }
-function getMap() {
-	var perusahaan = getPerusahaan();
-	var lat = perusahaan.latitude;
-    var lng = perusahaan.longitude;
-    var location = new google.maps.LatLng(lat, lng);
 
-    var mapOptions = {
-		center: location,
-		zoom: 16
-	};
+var myMap;
+var myMarker;
+var mapIdPelanggan;
+var mapped;
+function getMap(map) {
+    if (map == null || map == undefined) {
+        var perusahaan = getPerusahaan();
+        var lat = perusahaan.latitude;
+        var lng = perusahaan.longitude;
+        var location = new google.maps.LatLng(lat, lng);
 
-	return new google.maps.Map( $('#map-canvas')[0], mapOptions );
+        var mapOptions = {
+            center: location,
+            zoom: 16
+        };
+
+        map = new google.maps.Map($('#map-canvas')[0], mapOptions);
+    }
+
+    return map;
 }
-function setMarker(map, location, image, title) {
-	var marker = new google.maps.Marker({
+function setMarker(map, location, image, title, draggable) {
+	myMarker = new google.maps.Marker({
 		position: location,
         map: map,
         icon: image,
-        title: title
+        title: title,
+        draggable: draggable
 	});
 }
 function setUnitedVisionMap(map) {
 	var location = new google.maps.LatLng(1.502444, 124.915389);
-	setMarker(map, location, unitedvision_icon, 'United Vision');
+	setMarker(map, location, unitedvision_icon, 'United Vision', false);
 }
 function setPerusahaanMap(map) {
 	var perusahaan = getPerusahaan();
@@ -388,16 +410,16 @@ function setPerusahaanMap(map) {
     var lng = perusahaan.longitude;
 	if (lat != 0 && lng !=0 ) {
 		var location = new google.maps.LatLng(lat, lng);
-		setMarker(map, location, studio_icon, perusahaan.nama);
+		setMarker(map, location, studio_icon, perusahaan.nama, false);
 	}
 }
 function loadPelangganMap(status) {
     var success = function (result) {
-        var map = getMap();
+        var myMap = getMap(myMap);
         var icon = getIcon(status.toLowerCase());
 
-        setUnitedVisionMap(map);
-        setPerusahaanMap(map);
+        setUnitedVisionMap(myMap);
+        setPerusahaanMap(myMap);
 
         var list = result.listModel;
         var index;
@@ -411,34 +433,44 @@ function loadPelangganMap(status) {
             var nama = list[index].nama;
             var pelanggan_location = new google.maps.LatLng(lat, lng);
 
-            setMarker(map, pelanggan_location, icon, nama);
+            setMarker(myMap, pelanggan_location, icon, nama, false);
         }
     }
 
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status, success, errorMessage);
 }
-function tampilkanPeta(query) {
+function tampilkanPeta(query, draggable) {
     var success = function (result) {
         alert(result.message);
-        var map = getMap();
-
-        setUnitedVisionMap(map);
-        setPerusahaanMap(map);
 
         var model = result.model;
         var lat = model.latitude;
         var lng = model.longitude;
+        mapIdPelanggan = model.id; // used in simpan method
+
+        myMap = initializeMap(null);
 
         if (lat != 0 && lng != 0) {
             var icon = getIcon(model.status.toLowerCase());
             var nama = model.nama;
             var pelanggan_location = new google.maps.LatLng(lat, lng);
 
-            setMarker(map, pelanggan_location, icon, nama);
+            setMarker(myMap, pelanggan_location, icon, nama, draggable);
+            mapped = true;
+        } else {
+            mapped = false;
         }
     }
 	
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + query, success, errorMessage);
+}
+function initializeMap(map) {
+    myMap = getMap(map);
+    setUnitedVisionMap(myMap);
+    setPerusahaanMap(myMap);
+    google.maps.event.addListener(myMap, 'click', click);
+
+    return myMap;
 }
 
 //Months definiton
@@ -483,7 +515,6 @@ var month = function () {
         }
     };
 } ();
-
 function constructPartMessage(bulan, jumlahBulan) {
     bulan = bulan.toLowerCase();
     var partMessage = bulan;

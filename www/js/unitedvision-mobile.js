@@ -14,10 +14,8 @@ myApp = function () {
 var onTagihanSuccess = function (result) {
     var tagihan = result.model;
 
-    $('#bulan').val(tagihan.bulanStr);
+    $('#bulan').val(tagihan.bulan);
     $('#tahun').val(tagihan.tahun);
-
-    alert(tagihan.bulan + '-' + tagihan.tahun);
 };
 function checkLogin() {
     if (isLogin() === false) {

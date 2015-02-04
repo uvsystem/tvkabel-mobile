@@ -27,18 +27,15 @@
 	    <!-- Google Map's API -->
 	    <script src="https://maps.googleapis.com/maps/api/js?region=IN&language=in&key=AIzaSyCw_kA9o3rJ3PUiOixAMkCMP-OJivVhMPY"></script>
         <script type="text/javascript">
-		    function initialize() {
+            var initialize = function () {
                 myApp.showPleaseWait();
-                initMap();
+                initializeMap(myMap);
                 myApp.hidePleaseWait();
-      	    };
-            function initMap() {
-			    var map = getMap();
-
-			    setUnitedVisionMap(map);
-			    setPerusahaanMap(map);
             }
-      	    google.maps.event.addDomListener(window, 'load', initialize);
+            var click = function(event) {
+                //do nothing when mapp clicked
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
         </script>
         <title>United Vision</title>
     </head>
@@ -62,7 +59,9 @@
 				<button onclick="location.href='payment.html'" class="ui-btn" width="100">Pembayaran</button>
 				<button onclick="location.href='map.html'" class="ui-btn" width="100">Peta</button>
 				<button onclick="location.href='gps.html'" class="ui-btn" width="100">Lokasi</button>
+                <!--
 				<button onclick="location.href='barcode.html'" class="ui-btn" width="100">Scan Barcode</button>
+                -->
 				<button id="btn-logout" class="ui-btn" width="100">Logout</button>
                 <p>Tampilan</p>
 				<button id="btn-aktif" class="ui-btn" width="100">Aktif</button>
