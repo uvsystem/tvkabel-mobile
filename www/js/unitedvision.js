@@ -6,7 +6,7 @@
  * Manado, Indonesia.
  * deddy.kakunsi@gmail.com
  * 
- * Version: 4.0.*
+ * Version: 4.1.0
  */
 
 var target = 'https://uvision.whelastic.net/tvkabel/api';
