@@ -497,7 +497,25 @@ var month = function () {
                 case 12: return 'December'
             }
         },
+        getRealName: function (name) {
+			name = name.toLowerCase();
+            switch (name) {
+                case 'january': return 'Januari'
+                case 'february': return 'Februari'
+                case 'march': return 'Maret'
+                case 'april': return 'April'
+                case 'may': return 'Mei'
+                case 'june': return 'Juni'
+                case 'july': return 'Juli'
+                case 'august': return 'Agustus'
+                case 'september': return 'September'
+                case 'october': return 'Oktober'
+                case 'november': return 'November'
+                case 'december': return 'Desember'
+            }
+        },
         getIndex: function (name) {
+			name = name.toLowerCase();
             switch (name) {
                 case 'january': return 1
                 case 'february': return 2
@@ -516,14 +534,15 @@ var month = function () {
     };
 } ();
 function constructPartMessage(bulan, jumlahBulan) {
-    bulan = bulan.toLowerCase();
-    var partMessage = bulan;
+    var partMessage = month.getRealName(bulan);
     var intBulan = month.getIndex(bulan);
 
     var i;
     for (i = 1; i < jumlahBulan; i++) {
         intBulan++;
-        partMessage += ', ' + month.getName(intBulan);
+		var nextBulan = month.getName(intBulan);
+		
+        partMessage += ', ' + month.getRealName(nextBulan);
     }
 
     return partMessage;

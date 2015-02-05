@@ -15,6 +15,9 @@
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
 
+        <!-- Apache Cordova Library -->
+		<script type="text/javascript" src="cordova.js"></script>
+		
 		<!-- UnitedVision's JS production -->
 		<script src="js/unitedvision.js"></script>
 		<!-- UnitedVision-mobile's JS -->
@@ -83,6 +86,7 @@
                       $('#nama-pelanggan').val(pelanggan.nama);
                       $('#iuran-pelanggan').val(pelanggan.iuran);
                       $('#profesi-pelanggan').val(pelanggan.profesi);
+					  $('#jumlah-bulan-pelanggan').val(1);
                   };
                   loadPelangganByKode(kode, onPelangganSuccess, errorMessage);
                   loadTagihanByKode(kode, onTagihanSuccess, errorMessage);
@@ -116,6 +120,7 @@
                       if (result.message === 'Berhasil!') {
                           var partMessage = constructPartMessage(bulan, jumlahBulan);
                           alert('Berhasil Menyimpan Pembayaran untuk bulan ' + partMessage);
+						  loadTagihanById(idPelanggan, onTagihanSuccess, errorMessage);
                           sendSMS(pelanggan, partMessage);
                       } else {
                           alert(result.message);

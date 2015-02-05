@@ -74,6 +74,7 @@ function resetPelangganDetail() {
 	$('#iuran-detail-pelanggan').val('');
 }
 
+
 function sendSMS(pelanggan, partMessage) {
     if (pelanggan != null && pelanggan != undefined) {
         var hp = pelanggan.hp;
@@ -106,9 +107,14 @@ function sendSMSWithNomor(nomor, partMessage) {
         textMessage: 'Yth. Pelanggan TV Kabel ' + namaPerusahaan + ', terima kasih atas pembayaran tagihan bulan ' + partMessage + ' anda. SMS ini bisa menjadi bukti pembayaran. Terima kasih.'
     };
 
-    sms.sendMessage(messageInfo, function (message) {
-        alert("SMS terkirim");
-    }, function (error) {
-        alert("SMS tidak terkirim. code: " + error.code + ", message: " + error.message);
-    });
+	if (sms) {
+		sms.sendMessage(messageInfo,
+			function () {
+				alert("SMS terkirim");
+			},
+			function (error) {
+				alert("SMS tidak terkirim. code: " + error.code + ", message: " + error.message);
+			}
+		);
+	}
 }
