@@ -1,4 +1,4 @@
-/* UnitedVision. 2014
+/* UnitedVision. 2015
  * Manado, Indonesia.
  * dkakunsi.unitedvision@gmail.com
  * 
@@ -6,21 +6,25 @@
  * Manado, Indonesia.
  * deddy.kakunsi@gmail.com
  * 
- * Version: 4.1.0
+ * Version: 1.0.0
  */
 
-var target = 'https://uvision.whelastic.net/tvkabel/api';
+var target = 'http://uvs-t001.whelastic.net/api';
 
 // Please wait variable.
 // This will/must be set from application's specific script.
 var myApp;
 // Default error callback
-var errorMessage = function (jqXHR, textStatus, errorThrown) {
-    alert('Error : ' + textStatus + ' - ' + errorThrown);
+var errorMessage = function () {
+    alert('Tidak bisa melakukan koneksi ke server');
 }
+//Error log
+var errorLog = function(jqXHR, textStatus, errorThrown) {
+	console.log('Error : ' + textStatus + ' - ' + errorThrown);
+};
 // Default callback
 var emptyFunction = function () {
-	// do nothing
+	//do nothing
 }
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -70,7 +74,7 @@ function login(username, password) {
 		username: username,
 		password: password
 	};
-	var onSuccess = function (result) {
+	var success = function (result) {
 	    if (result.message === 'Berhasil!') {
 			setLogin(true);
 	        setOperator(result.model);
@@ -81,7 +85,13 @@ function login(username, password) {
 			alert(result.message);
 	    }
 	};
-	process(target + '/login', data, 'POST', onSuccess, errorMessage);
+	
+	process(target + "/login.php", data, 'POST',
+	function(result) {
+		var response = JSON.parse(result);
+		success(response);
+	}, 
+	errorMessage);
 }
 function logout() {
 	myApp.showPleaseWait();
@@ -90,25 +100,6 @@ function logout() {
 	myApp.hidePleaseWait();
 	window.location.href = 'index.html';
 	alert('Berhasil Logout');
-
-	// This is alternate version of logout (client logout)
-	// The service still have bug, it always return HTTP 500 (Internal Server Error)
-	/*  $.ajax({
-        type: 'POST',
-        beforeSend: OnBeforeAjaxRequest,
-        url: target + '/logout',
-        username: getUsername(),
-        password: getPassword(),
-        contentType: 'application/json',
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function (result) {
-            myApp.hidePleaseWait();
-            alert('Berhasil Logout');
-        },
-        error: errorMessage
-    }); */
 }
 function process(url, data, method, success, error) {
 	var _username = getUsername();
@@ -121,12 +112,10 @@ function process(url, data, method, success, error) {
 	        username: _username,
 	        password: _password,
 	        contentType: 'application/json',
-	        crossDomain: true,
 	        processData: false,
 	        data: JSON.stringify(data),
 	        beforeSend: function (jqXHR, settings) {
-				jqXHR.setRequestHeader('Origin', 'https://uvs-t001.whelastic.net');
-	            myApp.showPleaseWait()
+	            myApp.showPleaseWait();
 	        }
 	    });
 		
@@ -139,220 +128,75 @@ function process(url, data, method, success, error) {
 		window.location.href = 'index.html';
 	}
 }
-function save(url, data, method, success, error) {
-	process(url, data, method, success, error);
-}
-function load(url, success, error) {
-	process(url, '', 'GET', success, error);
-}
-function submitPost(path, params, method) {
-    method = method || "post"; // Set method to post by default if not specified.
-
-    // The rest of this code assumes you are not using a library.
-    // It can be made less wordy if you use one.
-    var form = document.createElement("form");
-    form.setAttribute("method", method);
-    form.setAttribute("action", path);
-
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
-
-            form.appendChild(hiddenField);
-         }
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-}
-function savePerusahaan(data, success, error) {
-	save(target + '/perusahaan/master', data, 'POST', success, error);
-}
-function loadPerusahaanById(id, success, error) {
-	load(target + '/perusahaan/id/' + id, success, error);
-}
-function loadPerusahaanByKode(kode, success, error) {
-	load(target + '/perusahaan/kode/' + kode, success, error);
-}
-function loadActivePerusahaan(success, error) {
-	load(target + '/perusahaan/active', success, error);
-}
-function loadRekapPerusahaan(success, error) {
-	load(target + '/perusahaan/' + getIdPerusahaan() + '/rekap', success, error);
-}
-function loadRekapAktifPerusahaan(success, error) {
-	load(target + '/perusahaan/active/rekap', success, error);
-}
-function loadAllPerusahaan(success, error) {
-	load(target + '/perusahaan', success, error);
-}
-function registrasiPerusahaan(data, success, error) {
-	save(target + '/perusahaan/registrasi', data, 'POST', success, error);
-}
-function savePegawai(data, success, error) {
-	save(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/master', data, 'POST', success, error);
-}
-function deletePegawai(id, success, error) {
-	save(target + '/pegawai/removed/master', id, 'POST', success, error);
-}
-function loadActivePegawai(success, error) {
-	load(target + '/pegawai/active', success, error);
-}
-function loadPegawaiById(id, success, error) {
-	load(target + '/pegawai/id/' + id, success, error);
-}
-function loadPegawaiByKode(kode, success, error) {
-	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/kode/' + kode, success, error);
-}
-function loadPegawaiByNama(nama, success, error) {
-	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/nama/' + nama, success, error);
-}
-function loadListPegawaiByKode(kode, page, success, error) {
-	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/kode/' + kode + '/page/' + page, success, error)
-}
-function loadListPegawaiByNama(nama, page, success, error) {
-	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/nama/' + nama + '/page/' + page, success, error);
-}
-function loadAllPegawai(success, error) {
-	load(target + '/pegawai/perusahaan/' + getIdPerusahaan(), success, error);
-}
-function savePelanggan(data, success, error) {
-	save(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/master', data, 'POST', success, error);
-}
-function updateTunggakan(id, data, success, error) {
-	save(target + '/pelanggan/' + id + '/tunggakan/master', data, 'PUT', success, error);
-}
 function setPelangganMapLocation(id, latitude, longitude, success, error) {
-	save(target + '/pelanggan/' + id + '/location/' + latitude + '/' + longitude, '', "PUT", success, error);
-}
-function activatePelanggan(id, success, error) {
-	save(target + '/pelanggan/activated/master', id, 'PUT', success, error);
-}
-function passivatePelanggan(id, success, error) {
-	save(target + '/pelanggan/passivated/master', id, 'PUT', success, error);
-}
-function banPelanggan(id, success, error) {
-	save(target + '/pelanggan/banned/master', id, 'PUT', success, error);
-}
-function freePelanggan(id, success, error) {
-	save(target + '/pelanggan/free/master', id, 'PUT', success, error);
-}
-function deletePelanggan(id, success, error) {
-	save(target + '/pelanggan/removed/master', id, 'PUT', success, error);
-}
-function loadPelangganById(id, success, error) {
-	load(target + '/pelanggan/id/' + id, success, error);
+	var data = {
+		id: id,
+		latitude: latitude,
+		longitude: longitude
+	};
+	
+	process(target + '/pelanggan/location.php', data, "PUT",
+	function(result) {
+		var response = JSON.parse(result);
+		success(response);
+	}, 
+	error);
 }
 function loadPelangganByKode(kode, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/kode/' + kode, success, error);
+	var data = {
+		idPerusahaan: getIdPerusahaan(),
+		kode: kode
+	};
+	process(target + '/pelanggan/kode.php', data, "POST", 
+	function(result) {
+		var response = JSON.parse(result);
+		success(response);
+	},
+	error);
 }
-function loadListPelangganByKode(kode, page, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/kode/' + kode + '/page/' + page, success, error);
-}
-function loadListPelangganByKodeAndStatus(kode, status, page, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/kode/' + kode + '/status/' + status + '/page/' + page, success, error);
-}
-function loadPelangganByNama(nama, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + nama, success, error);
-}
-function loadListPelangganByNama(nama, page, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + nama + '/page/' + page, success, error);
-}
-function loadListPelangganByNamaAndStatus(nama, status, page, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + nama + '/status/' + status + '/page/' + page, success, error);
-}
-function loadListPelangganByNomor(nomor, page, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nomor/' + nomor + '/page/' + page, success, error);
-}
-function loadListPelangganByNomorAndStatus(nomor, status, page, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nomor/' + nomor + '/status/' + status + '/page/' + page, success, error);
-}
-function loadListPelangganByStatus(status, page, success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status + '/page/' + page, success, error);
-}
-function loadAllPelanggan(success, error) {
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan(), success, error);
-}
+function loadPelangganByStatus(status, success, error) {
+	var data = {
+		idPerusahaan: getIdPerusahaan(),
+		status: status
+	};
+	process(target + "/pelanggan/status.php", data, "POST",
+	function(result) {
+		var response = JSON.parse(result);
+		success(response);
+	}, 
+	error);
+};
 function savePembayaran(data, success, error) {
-	save(target + '/pembayaran/master', data, 'POST', success, error);
-}
-function updatePembayaran(data, success, error) {
-	save(target + '/pembayaran/master', data, 'PUT', success, error);
-}
-function deletePembayaran(id, success, error) {
-	save(target + '/pembayaran/master', id, 'DELETE', success, error);
-}
-function loadTagihanByKode(kode, success, error) {
-	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/kode/' + kode + '/payable', success, error);
-}
-function loadTagihanByNama(nama, success, error) {
-	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/nama/' + nama + '/payable', success, error);
-}
+	process(target + '/pembayaran/master.php', data, 'POST',
+	function(result) {
+		var response = JSON.parse(result);
+		success(response);
+	}, 
+	error);
+};
 function loadTagihanById(id, success, error) {
-	load(target + '/pembayaran/pelanggan/id/' + id + '/payable', success, error);
-}
-function loadPembayaranById(id, success, error) {
-	load(target + '/pembayaran/id/' + id, success, error);
-}
-function loadListPembayaranByKodePegawai(kode, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pegawai/kode/' + kode + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
-}
-function loadListPembayaranByNamaPegawai(nama, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pegawai/nama/' + nama + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
-}
-function loadListPembayaranByKodePelanggan(kode, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/kode/' + kode + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
-}
-function loadListPembayaranByNamaPelanggan(nama, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/nama/' + nama + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
-}
-function loadAllKota(success, error) {
-	load(target + '/alamat/kota', success, error);
-}
-function loadAllKecamatan(success, error) {
-	load(target + '/alamat/kecamatan', success, error);
-}
-function loadListKecamatanByKota(kota, success, error) {
-	load(target + '/alamat/kecamatan/kota/' + kota, success, error);
-}
-function loadAllKelurahan(success, error) {
-	load(target + '/alamat/kelurahan', success, error);
-}
-function loadListKelurahanByKecamatan(kecamatan, success, error) {
-	load(target + '/alamat/kelurahan/kecamatan/' + kecamatan, success, error);
-}
-
-//REKAP Library
-function rekapAlamat(data) {
-    submitPost(target + '/print/rekap/alamat', data);
-}
-function rekapAlamatBatch(data) {
-    submitPost(target + '/print/rekap/alamat/batch', data);
-}
-function rekapTunggakan(data) {
-    submitPost(target + '/print/rekap/tunggakan', data);
-}
-function kartuPelanggan(data) {
-    submitPost(target + '/print/pelanggan/kartu', data);    
-}
-function kartuPelangganEmpty(data) {
-    submitPost(target + '/print/pelanggan/kartu/empty', data);    
-}
-function kartuPelangganAktif(data) {
-    submitPost(target + '/print/pelanggan/kartu/aktif', data);
-}
-function rekapHari(data) {
-    submitPost(target + '/print/rekap/hari', data);    
-}
-function rekapBulan(data) {
-    submitPost(target + '/print/rekap/bulan', data);    
-}
-function rekapTahun(data) {
-    submitPost(target + '/print/rekap/tahun', data);    
-}
+	var data = {
+		id: id
+	};
+	process(target + "/tagihan/id.php", data, "POST",
+	function(result) {
+		var response = JSON.parse(result);
+		success(response);
+	},
+	error);
+};
+function loadTagihanByKode(kode, success, error) {
+	var data = {
+		idPerusahaan: getIdPerusahaan(),
+		kode: kode
+	};
+	process(target + '/tagihan/kode.php', data, "POST",
+	function(result) {
+		var response = JSON.parse(result);
+		success(response);
+	}, 
+	error);
+};
 
 //MAPS Library
 var aktif_icon = 'images/aktif.png';
@@ -437,7 +281,7 @@ function loadPelangganMap(status) {
         }
     }
 
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status, success, errorMessage);
+	loadPelangganByStatus(status, success, errorMessage);
 }
 function tampilkanPeta(query, draggable) {
     var success = function (result) {
@@ -462,7 +306,7 @@ function tampilkanPeta(query, draggable) {
         }
     }
 	
-	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + query, success, errorMessage);
+	loadPelangganByKode(query, success, errorMessage);
 }
 function initializeMap(map) {
     myMap = getMap(map);

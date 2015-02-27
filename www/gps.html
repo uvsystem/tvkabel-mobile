@@ -79,13 +79,12 @@
               location: function () {
                   var onSuccessRetrievingLocation = function (position) {
                       myApp.hidePleaseWait();
-                      alert('Berhasil!');
                       $('#latitude').val(position.coords.latitude);
                       $('#longitude').val(position.coords.longitude);
                   };
                   var onError = function (error) {
                       myApp.hidePleaseWait();
-                      alert('the code is ' + error.code + '. \n' + 'meessage: ' + error.message);
+                      alert('Error : ' + error.code + ' - ' + error.message);
                   };
                   myApp.showPleaseWait();
                   navigator.geolocation.getCurrentPosition(onSuccessRetrievingLocation, onError);

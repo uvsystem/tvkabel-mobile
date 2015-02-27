@@ -116,12 +116,23 @@
                       jumlahPembayaran: jumlahPembayaran,
                       jumlahBulan: jumlahBulan
                   };
+				  
+				  var onSuccessRetrievingLocation = function(position) {
+					var latitude = position.coords.latitude;
+					var longitude = position.coords.longitude;
+
+					setPelangganMapLocation(idPelanggan, latitude, longitude, emptyFunction, errorLog);
+				  };
+				  
                   var onSuccess = function (result) {
                       if (result.message === 'Berhasil!') {
                           var partMessage = constructPartMessage(bulan, jumlahBulan);
                           alert('Berhasil Menyimpan Pembayaran untuk bulan ' + partMessage);
 						  loadTagihanById(idPelanggan, onTagihanSuccess, errorMessage);
                           sendSMS(pelanggan, partMessage);
+						  
+						  if ((pelanggan.latitude == 0) || (pelanggan.longitude == 0))
+							navigator.geolocation.getCurrentPosition(onSuccessRetrievingLocation, emptyFunction);
                       } else {
                           alert(result.message);
                       }

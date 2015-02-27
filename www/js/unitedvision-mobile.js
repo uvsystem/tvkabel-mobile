@@ -104,7 +104,7 @@ function sendSMSWithNomor(nomor, partMessage) {
     var namaPerusahaan = getPerusahaan().nama;
     var messageInfo = {
         phoneNumber: nomor,
-        textMessage: 'Yth. Pelanggan TV Kabel ' + namaPerusahaan + ', terima kasih atas pembayaran tagihan bulan ' + partMessage + ' anda. SMS ini bisa menjadi bukti pembayaran. Terima kasih.'
+        textMessage: 'Yth. Pelanggan TV Kabel ' + namaPerusahaan + ', terima kasih atas pembayaran tagihan bulan ' + partMessage + ' anda. Terima kasih.'
     };
 
 	if (sms) {
