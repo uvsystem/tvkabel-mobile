@@ -9,7 +9,7 @@
  * Version: 1.0.0
  */
 
-var target = 'http://uvs-t001.whelastic.net/api';
+var target = 'http://api.unitedvision.whelastic.net/tvkabel';
 
 // Please wait variable.
 // This will/must be set from application's specific script.
