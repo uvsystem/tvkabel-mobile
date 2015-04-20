@@ -6,10 +6,10 @@
  * Manado, Indonesia.
  * deddy.kakunsi@gmail.com
  * 
- * Version: 1.0.0
+ * Version: 1.1.0
  */
 
-var target = 'http://api.unitedvision.whelastic.net/tvkabel';
+var target = 'https://tvk-unitedvision.whelastic.net/api';
 
 // Please wait variable.
 // This will/must be set from application's specific script.
