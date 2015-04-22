@@ -6,7 +6,7 @@
  * Manado, Indonesia.
  * deddy.kakunsi@gmail.com
  * 
- * Version: 1.2.0
+ * Version: 1.1.0
  */
 
 var target = 'https://tvk-unitedvision.whelastic.net/api';
