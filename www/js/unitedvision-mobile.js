@@ -104,16 +104,16 @@ function sendSMSWithNomor(nomor, partMessage) {
     var namaPerusahaan = getPerusahaan().nama;
     var messageInfo = {
         phoneNumber: nomor,
-        textMessage: 'Yth. Pelanggan TV Kabel ' + namaPerusahaan + ', terima kasih atas pembayaran tagihan bulan ' + partMessage + ' anda. Terima kasih.'
+        textMessage: 'Yth. Pelanggan ' + namaPerusahaan + ', terima kasih atas pembayaran tagihan bulan ' + partMessage + ' anda. Terima kasih.'
     };
 
 	if (sms) {
 		sms.sendMessage(messageInfo,
 			function () {
-				alert("SMS terkirim");
+				console.log("SMS terkirim"); // LOG
 			},
 			function (error) {
-				alert("SMS tidak terkirim. code: " + error.code + ", message: " + error.message);
+				console.log("SMS tidak terkirim. code: " + error.code + ", message: " + error.message); // LOG
 			}
 		);
 	}
