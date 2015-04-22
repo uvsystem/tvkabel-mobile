@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.unitedvision.tvkabel.mobile" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>UnitedVision</name>
+<widget id="com.unitedvision.tvkabel.mobile" version="2.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Aplikasi TV Kabel by UnitedVision</name>
     <description>
-        Aplikasi mobile dari United Vision untuk client.
+        Aplikasi mobile dari United Vision untuk pelanggan.
     </description>
     <author email="dkakunsi.unitedvision@gmail.com" href="https://uvs.web.id">
-        United Vision System
+        UnitedVision team
     </author>
     <content src="index.html" />
     <access origin="*" />
