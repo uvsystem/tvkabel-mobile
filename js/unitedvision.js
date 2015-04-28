@@ -69,13 +69,16 @@ function isLogin() {
 function setLogin(condition) {
 	localStorage.setItem('login', condition);
 }
+
 function login(username, password) {
+
 	var data = {
 		username: username,
 		password: password
 	};
+	
 	var success = function (result) {
-	    if (result.message === 'Berhasil!') {
+	    if (result.message == 'Berhasil!') {
 			setLogin(true);
 	        setOperator(result.model);
 
@@ -86,13 +89,9 @@ function login(username, password) {
 	    }
 	};
 	
-	process(target + "/login.php", data, 'POST',
-	function(result) {
-		var response = JSON.parse(result);
-		success(response);
-	}, 
-	errorMessage);
+	process(target + "/login.php", data, 'POST', success,	errorMessage);
 }
+
 function logout() {
 	myApp.showPleaseWait();
 	setLogin(false);
@@ -101,11 +100,12 @@ function logout() {
 	window.location.href = 'index.html';
 	alert('Berhasil Logout');
 }
+
 function process(url, data, method, success, error) {
 	var _username = getUsername();
 	var _password = getPassword();
 	
-	if (_username !== '' || password !== '') {
+	if (_username != '' || password != '') {
 	    var promise = $.ajax({
 	        type: method,
 	        url: url,
@@ -140,6 +140,7 @@ function process(url, data, method, success, error) {
 		window.location.href = 'index.html';
 	}
 }
+
 function setPelangganMapLocation(id, latitude, longitude, success, error) {
 	var data = {
 		id: id,
@@ -149,6 +150,7 @@ function setPelangganMapLocation(id, latitude, longitude, success, error) {
 	
 	process(target + '/pelanggan/location.php', data, "PUT", success, error);
 }
+
 function loadPelangganByKode(kode, success, error) {
 	var data = {
 		idPerusahaan: getIdPerusahaan(),
@@ -157,6 +159,7 @@ function loadPelangganByKode(kode, success, error) {
 
 	process(target + '/pelanggan/kode.php', data, "POST", success, error);
 }
+
 function loadPelangganByStatus(status, success, error) {
 	var data = {
 		idPerusahaan: getIdPerusahaan(),
@@ -248,6 +251,7 @@ function setPerusahaanMap(map) {
 		setMarker(map, location, studio_icon, perusahaan.nama, false);
 	}
 }
+
 function loadPelangganMap(status) {
     var success = function (result) {
         var myMap = getMap(myMap);
@@ -274,6 +278,7 @@ function loadPelangganMap(status) {
 
 	loadPelangganByStatus(status, success, errorMessage);
 }
+
 function tampilkanPeta(query, draggable) {
     var success = function (result) {
         alert(result.message);
