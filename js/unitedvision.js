@@ -83,7 +83,7 @@ function login(username, password) {
 	        setOperator(result.model);
 
 	        alert('Berhasil Login - Selamat Datang ' + result.model.nama + ' dari ' + result.model.perusahaan.nama);
-	        window.location.href = "dashboard.html";
+	        window.location.href = "index.html";
 		} else {
 			alert(result.message);
 	    }
