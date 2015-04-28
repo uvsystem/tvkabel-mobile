@@ -15,8 +15,9 @@ var target = 'https://tvk-unitedvision.whelastic.net/api';
 // This will/must be set from application's specific script.
 var myApp;
 // Default error callback
-var errorMessage = function () {
-    alert('Tidak bisa melakukan koneksi ke server');
+var errorMessage = function (jqXHR, textStatus, errorThrown) {
+	alert('Error : ' + textStatus + ' - ' + errorThrown);
+    //alert('Tidak bisa melakukan koneksi ke server');
 }
 //Error log
 var errorLog = function(jqXHR, textStatus, errorThrown) {
