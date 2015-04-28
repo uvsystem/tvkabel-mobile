@@ -14,6 +14,7 @@ myApp = function () {
 var onTagihanSuccess = function (result) {
     var tagihan = result.model;
 
+	if ( !tagihan )
     $('#bulan').val(tagihan.bulan);
     $('#tahun').val(tagihan.tahun);
 };

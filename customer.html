@@ -70,6 +70,10 @@
               if (kode !== '') {
                   var onSuccess = function (result) {
                       var pelanggan = result.model;
+					  
+					  if ( !pelanggan )
+					  	return;
+						
                       var alamat = pelanggan.namaKelurahan + ', Lingk. ' + pelanggan.lingkungan;
                       var kontak = pelanggan.telepon + ', ' + pelanggan.hp + ', ' + pelanggan.email;
 

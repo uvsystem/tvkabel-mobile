@@ -119,7 +119,19 @@ function process(url, data, method, success, error) {
 	        }
 	    });
 		
-	    promise.done(success);
+	    promise.done( function ( result ) {
+
+			result = JSON.parse( result );
+			
+			if ( ( result.tipe == 'ERROR' ) && ( result.tipe == 'MESSAGE' ) ) {
+
+				alert( result.message );
+				
+				return;
+			}
+			
+			success( result );
+		});
 	    promise.fail(error);
 	    promise.always(function (jqXHR, textStatus) {
 	        myApp.hidePleaseWait();
@@ -135,67 +147,44 @@ function setPelangganMapLocation(id, latitude, longitude, success, error) {
 		longitude: longitude
 	};
 	
-	process(target + '/pelanggan/location.php', data, "PUT",
-	function(result) {
-		var response = JSON.parse(result);
-		success(response);
-	}, 
-	error);
+	process(target + '/pelanggan/location.php', data, "PUT", success, error);
 }
 function loadPelangganByKode(kode, success, error) {
 	var data = {
 		idPerusahaan: getIdPerusahaan(),
 		kode: kode
 	};
-	process(target + '/pelanggan/kode.php', data, "POST", 
-	function(result) {
-		var response = JSON.parse(result);
-		success(response);
-	},
-	error);
+
+	process(target + '/pelanggan/kode.php', data, "POST", success, error);
 }
 function loadPelangganByStatus(status, success, error) {
 	var data = {
 		idPerusahaan: getIdPerusahaan(),
 		status: status
 	};
-	process(target + "/pelanggan/status.php", data, "POST",
-	function(result) {
-		var response = JSON.parse(result);
-		success(response);
-	}, 
-	error);
+	
+	process(target + "/pelanggan/status.php", data, "POST", success, error);
 };
+
 function savePembayaran(data, success, error) {
-	process(target + '/pembayaran/master.php', data, 'POST',
-	function(result) {
-		var response = JSON.parse(result);
-		success(response);
-	}, 
-	error);
+	process(target + '/pembayaran/master.php', data, 'POST', success, error);
 };
+
 function loadTagihanById(id, success, error) {
 	var data = {
 		id: id
 	};
-	process(target + "/tagihan/id.php", data, "POST",
-	function(result) {
-		var response = JSON.parse(result);
-		success(response);
-	},
-	error);
+
+	process(target + "/tagihan/id.php", data, "POST", success, error);
 };
+
 function loadTagihanByKode(kode, success, error) {
 	var data = {
 		idPerusahaan: getIdPerusahaan(),
 		kode: kode
 	};
-	process(target + '/tagihan/kode.php', data, "POST",
-	function(result) {
-		var response = JSON.parse(result);
-		success(response);
-	}, 
-	error);
+	
+	process(target + '/tagihan/kode.php', data, "POST", success,  error);
 };
 
 //MAPS Library
@@ -205,6 +194,7 @@ var putus_icon = 'images/putus.png';
 var studio_icon = 'images/studio.png';
 var warning_icon = 'images/warning.png';
 var unitedvision_icon = 'images/unitedvision.png';
+
 function getIcon(status) {
 	switch(status) {
 		case 'aktif': return aktif_icon;
@@ -218,6 +208,7 @@ var myMap;
 var myMarker;
 var mapIdPelanggan;
 var mapped;
+
 function getMap(map) {
     if (map == null || map == undefined) {
         var perusahaan = getPerusahaan();
